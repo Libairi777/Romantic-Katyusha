@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>终极提问❤️</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            text-align: center;
+            font-family: 'Microsoft YaHei', sans-serif;
+            padding: 15vh 5% 5%;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 动态表情背景 */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.3; /* 调整透明度 */
+        }
+
+        .dynamic-bg img {
+            position: absolute;
+            width: 15vw;
+            height: auto;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* 表情位置动画 */
+        .dynamic-bg img:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation-duration: 8s;
+        }
+
+        .dynamic-bg img:nth-child(2) {
+            top: 30%;
+            right: 10%;
+            animation-duration: 7s;
+            animation-delay: 1s;
+        }
+
+        .dynamic-bg img:nth-child(3) {
+            top: 60%;
+            left: 15%;
+            animation-duration: 9s;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(10px) rotate(-5deg); }
+            75% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        #question {
+            color: #ff4d79;
+            font-size: 6vw;
+            margin: 0 auto 5vh;
+            max-width: 90%;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            transition: opacity 0.5s;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 4vw;
+            position: relative;
+            padding: 2vh 0;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10vw;
+            padding: 3vw 6vw;
+            font-size: 4.5vw;
+            cursor: pointer;
+            transform-origin: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2vw 3vw rgba(0,0,0,0.1);
+            min-width: 30vw;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        #yesButton {
+            background: linear-gradient(45deg, #ff4d79, #ff3366);
+            color: white;
+            animation: heartbeat 1.2s infinite;
+        }
+
+        #noButton {
+            background: linear-gradient(45deg, #cccccc, #aaaaaa);
+            color: white;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* 同意后的界面样式 */
+        .love-container {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .love-title {
+            font-size: 6vw;
+            color: #ff4d79;
+            margin-bottom: 3vh;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .love-message {
+            font-size: 4vw;
+            color: #ff4d79;
+            line-height: 1.6;
+            margin-bottom: 4vh;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+
+        .love-subtext {
+            font-size: 3.5vw;
+            color: #ff4d79;
+            opacity: 0.8;
+            margin-top: 2vh;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 0.5s forwards;
+        }
+
+        .love-emoji {
+            font-size: 8vw;
+            margin: 2vh 0;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 1s forwards;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-1vh); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh); }
+            100% { transform: translateY(110vh); }
+        }
+
+        @media (max-width: 600px) {
+            .btn {
+                min-width: 40vw;
+                padding: 4vw 8vw;
+            }
+
+            .love-title {
+                font-size: 8vw;
+            }
+
+            .love-message {
+                font-size: 5vw;
+            }
+
+            .love-subtext {
+                font-size: 4vw;
+            }
+
+            .love-emoji {
+                font-size: 10vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态表情背景 -->
+    <div class="dynamic-bg">
+        <img src="https://ts1.cn.mm.bing.net/th/id/R-C.82125deb621ff3733f54bbda48f41c57?rik=NMwHzgdLADMZPQ&riu=http%3a%2f%2fimg2.biaoqingjia.com%2fbiaoqing%2f201712%2f367c0e1c9b40d2c9c357a8c9465b215b.gif&ehk=CNe5aPshlN0VfsX%2f0BI7nNvcsGwsTg%2bzFhfbusn7RvU%3d&risl=&pid=ImgRaw&r=0" alt="表情1">
+        <img src="https://ts1.cn.mm.bing.net/th/id/R-C.54739f54e2e5030609f75ff1826ad473?rik=1kif56Gr9ix81A&riu=http%3a%2f%2f5b0988e595225.cdn.sohucs.com%2fimages%2f20180701%2f8dad0bf6d25f4f448582e9b0aad58863.jpeg&ehk=iTS0MFVZ%2b5%2fGIRTmsEJi3zYYWeB6PVjQIzzkDUEwQGE%3d&risl=&pid=ImgRaw&r=0" alt="表情2">
+        <img src="https://wimg.588ku.com/gif/22/05/30/ed41dab57ae24912729be06627489c9f.gif" alt="表情3">
+    </div>
+
+    <h1 id="question">你愿意和我一起创造未来吗？</h1>
+    <div class="button-container">
+        <button id="yesButton" class="btn" onclick="showLove()">❤️ 我愿意！</button>
+        <button id="noButton" class="btn" onclick="handleReject()">😈 再想想</button>
+    </div>
+    
+    <!-- 同意后的界面 -->
+    <div class="love-container">
+        <div class="love-title">❤️ 我们在一起啦！ ❤️</div>
+        <div class="love-message">
+            从这一刻起，我们的故事正式开始<br>
+            未来的每一天，我都会珍惜与你在一起的时光<br>
+            让我们一起创造美好的回忆吧！
+        </div>
+        <div class="love-emoji">🥳🎉💖</div>
+        <div class="love-subtext">
+            （温馨提示：记得经常联系我哦～）
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "ヽ( o･ｪ･)ﾉ你愿意和我一起看星星吗？",
+            "|_・)你愿意每天听我分享生活吗？",
+            "|ω・）你愿意成为我故事的主角吗？",
+            "|･ω･｀)你愿意收下我这颗真心吗？",
+            "真的不愿意接受我吗？(╯ε╰)"
+        ];
+        
+        let currentQuestion = 0;
+        let yesScale = 1;
+        let noScale = 1;
+
+        // 处理拒绝逻辑
+        function handleReject() {
+            // 放大"我愿意"按钮
+            yesScale = Math.min(yesScale + 0.2, 2);
+            document.getElementById('yesButton').style.transform = `scale(${yesScale})`;
+
+            // 缩小"再想想"按钮
+            noScale = Math.max(noScale - 0.2, 0.5);
+            document.getElementById('noButton').style.transform = `scale(${noScale})`;
+
+            // 切换问题
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                document.getElementById("question").textContent = questions[currentQuestion];
+            } else {
+                // 最后一个问题后隐藏"再想想"按钮
+                document.getElementById("noButton").style.display = "none";
+                document.getElementById("question").style.opacity = "0";
+                setTimeout(() => {
+                    document.getElementById("question").textContent = "看来你真的很犹豫呢...";
+                    document.getElementById("question").style.opacity = "1";
+                }, 500);
+            }
+        }
+
+        // 显示成功界面
+        function showLove() {
+            document.getElementById("question").style.display = "none";
+            document.querySelector(".button-container").style.display = "none";
+            document.querySelector(".love-container").style.display = "block";
+            startHeartsRain();
+        }
+
+        // 优化版爱心雨
+        function startHeartsRain() {
+            const container = document.body;
+            for (let i = 0; i < 20; i++) {
+                createHeart(i * 150);
+            }
+        }
+
+        function createHeart(delay) {
+            setTimeout(() => {
+                const heart = document.createElement("div");
+                heart.innerHTML = "❤️";
+                heart.style.cssText = `
+                    position: absolute;
+                    left: ${Math.random() * 100}%;
+                    font-size: ${Math.random() * 4 + 3}vw;
+                    animation: fall ${Math.random() * 3 + 2}s linear;
+                    opacity: 0.8;
+                `;
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, delay);
+        }
+    </script>
+</body>
+</html>

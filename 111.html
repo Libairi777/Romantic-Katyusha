@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>系统紧急安全警报</title>
+    <style>
+        body {
+            background: #000;
+            color: red;
+            font-family: "微软雅黑";
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+        }
+        #virus-alert {
+            animation: shake 0.5s infinite;
+            font-size: 48px;
+            margin-top: 20%;
+        }
+        @keyframes shake {
+            0% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            100% { transform: translateX(-10px); }
+        }
+        .cursor-trail {
+            position: absolute;
+            pointer-events: none;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div id="virus-alert">⚠️ 检测到严重病毒！⚠️</div>
+    <div id="countdown">系统将在 <span id="timer">10</span> 秒后崩溃</div>
+    <button onclick="showPopup()" style="font-size:24px;margin-top:20px;">立即修复</button>
+
+    <audio id="alarm" loop>
+        <source src="https://www.soundjay.com/buttons/sounds/button-35.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 无限弹窗
+        function showPopup() {
+            alert("正在下载修复程序... 3.5GB/3.5GB");
+            setInterval(() => {
+                window.open("https://fakeupdate.net/win10ue/", "_blank");
+            }, 500);
+        }
+
+        // 鼠标跟随特效
+        document.addEventListener('mousemove', (e) => {
+            const emojis = ['💣', '💥', '🔥', '💀', '👻'];
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+            trail.style.left = e.pageX + 'px';
+            trail.style.top = e.pageY + 'px';
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 1000);
+        });
+
+        // 自动播放警报声
+        document.addEventListener('click', () => {
+            document.getElementById('alarm').play();
+        });
+
+        // 倒计时特效
+        let time = 10;
+        const timer = setInterval(() => {
+            document.getElementById('timer').textContent = --time;
+            if(time <= 0) {
+                clearInterval(timer);
+                document.body.innerHTML = `
+                    <div style="margin-top:20%">
+                        <h1>🎉 愚人节快乐！ 🎉</h1>
+                        <p>你的电脑其实很安全（大概）</p>
+                        <button onclick="window.location.reload()">再玩一次</button>
+                        <p style="font-size:12px;margin-top:50px">按 Ctrl+W 退出末日模式</p>
+                    </div>
+                `;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

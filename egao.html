@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows 系统安全中心</title>
+    <style>
+        body {
+            background: #000;
+            color: red;
+            font-family: "微软雅黑", Arial;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+            cursor: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABFklEQVRYR+2W0QqDMBBEfdZf8Qv9/7ct2tLG9N4mQlNLi1S6D4KQZDebM0dF5PVj5Xw/AnAEQkqptNZUa02Z4wE4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOAAOgAPgADgADoAD4AA4AA6AA+AAOPADwAEAfm1QZ4ZWJQAAAABJRU5ErkJggg=="), auto;
+        }
+        #virus-alert {
+            animation: shake 0.5s infinite;
+            font-size: 42px;
+            margin-top: 15%;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        @keyframes shake {
+            0% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            100% { transform: translateX(-8px); }
+        }
+        .cursor-trail {
+            position: absolute;
+            pointer-events: none;
+            font-size: 22px;
+            opacity: 0.7;
+        }
+        #diagnostic-info {
+            background: #111;
+            padding: 15px;
+            width: 60%;
+            margin: 20px auto;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="virus-alert">🛑 严重系统故障！🛑</div>
+    
+    <div id="diagnostic-info">
+        <div style="color:#999;font-size:12px;text-align:left;margin-bottom:8px;">
+            [Microsoft® Windows Security Center - 诊断报告 2024-04-01T09:41:00Z]
+        </div>
+        <div style="color:#e74c3c;font-family:Consolas;font-size:14px;">
+            CRITICAL ERROR 0x8BADFOOD<br>
+            MEMORY_LEAK_DETECTED
+        </div>
+        <div style="font-size:13px;color:#666;margin-top:12px;">
+            技术支持热线：<span style="color:#ff4444;">400-814-8100</span><br>
+            <span style="font-size:11px;">案例追踪ID：APRIL01#2024</span>
+        </div>
+    </div>
+
+    <div id="countdown" style="margin:15px 0;">系统保护倒计时：<span id="timer" style="font-size:24px;">10</span> 秒</div>
+    
+    <button onclick="showPopup()" style="
+        font-size:18px;
+        padding:8px 25px;
+        background:#c0392b;
+        border:1px solid #962d22;
+        color:white;
+        border-radius:3px;
+        cursor:pointer;
+    ">尝试修复</button>
+
+    <audio id="alarm" loop>
+        <source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // 增强版无限弹窗
+        function showPopup() {
+            const fakeProgress = ["正在初始化安全协议...", "扫描系统分区...", "检测到328个威胁！", "下载修复补丁 (3.42GB)..."];
+            fakeProgress.forEach((text, index) => {
+                setTimeout(() => alert(text), index * 800);
+            });
+            setInterval(() => {
+                window.open('https://fakeupdate.net/win10ue/', '_blank', 'width=600,height=400');
+            }, 1500);
+        }
+
+        // 动态光标拖尾
+        const emojis = ['💻', '⚠️', '❌', '🚫', '⛔'];
+        document.addEventListener('mousemove', (e) => {
+            for(let i=0; i<3; i++) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                trail.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+                trail.style.left = `${e.clientX + (Math.random()*20-10)}px`;
+                trail.style.top = `${e.clientY + (Math.random()*20-10)}px`;
+                trail.style.transform = `scale(${0.5 + Math.random()})`;
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 500);
+            }
+        });
+
+        // 音效增强
+        let alarmPlayed = false;
+        document.addEventListener('click', () => {
+            if(!alarmPlayed) {
+                document.getElementById('alarm').play();
+                alarmPlayed = true;
+            }
+        });
+
+        // 专业版倒计时
+        let time = 10;
+        const timerElement = document.getElementById('timer');
+        const timer = setInterval(() => {
+            timerElement.textContent = --time;
+            timerElement.style.color = time <=5 ? '#ff0000' : '#fff';
+            timerElement.style.textShadow = time <=5 ? '0 0 10px #ff0000' : 'none';
+            
+            if(time <= 0) {
+                clearInterval(timer);
+                document.body.innerHTML = `
+                    <div style="margin-top:20%;color:#2ecc71;">
+                        <h1 style="font-size:48px;">🎉 愚人节快乐！ 🎉</h1>
+                        <p style="font-size:18px;">您的系统其实很安全（可能吧）</p>
+                        <button onclick="window.location.reload()" 
+                            style="margin-top:20px;
+                                   padding:10px 30px;
+                                   background:#27ae60;
+                                   border:none;
+                                   color:white;
+                                   border-radius:5px;
+                                   cursor:pointer;">
+                            重新吓唬朋友
+                        </button>
+                        <div style="margin-top:40px;font-size:12px;color:#7f8c8d;">
+                            安全提示：本页面为娱乐效果设计<br>
+                            关闭方法：按下 Ctrl + W 或直接叉掉本标签页
+                        </div>
+                    </div>
+                `;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
